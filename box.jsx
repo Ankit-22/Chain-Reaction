@@ -1,4 +1,5 @@
 class Box extends React.Component {
+	
 	constructor(props) {
 		super(props);
 		this.state = {color: 'black', count: this.props.count};

@@ -1,4 +1,5 @@
 class Ex2 extends React.Component {
+	
 	constructor(props) {
 		super(props);
 		this.reloadGame = this.reloadGame.bind(this);
