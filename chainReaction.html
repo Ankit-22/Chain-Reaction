@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Chain Reaction</title>
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+	<style type="text/css">
+	</style>
+
+</head>
+<body>
+	<div id = "root"></div>
+	<script type="text/babel">
+		var mat_fucking_rix = new Array(12);
+
+		var colors = ['black', 'red', 'blue', 'green', 'yellow', 'cyan', 'voilet'];
+		var users = 3;
+		var color = 1;
+		var game_flag = 0;
+		var counts = new Array(7);
+		for(var i = 0; i <= users; i++)
+			counts[i] = 0;
+		for(var i = 0; i < 12; i++) {
+			mat_fucking_rix[i] = new Array(12);
+		}
+
+		for(var i = 0; i < 12; i++) {
+			for(var j = 0; j < 12; j++) {
+				mat_fucking_rix[i][j] = [0, 'black'];
+			}
+		}
+
+		function the_fucking_recursion(x, y) {
+			counts[color]++;
+			if(++mat_fucking_rix[x][y][0] < (4 - (x == 11 ? 1 : 0) - (x == 0 ? 1 : 0) - (y == 0 ? 1 : 0) - (y == 11 ? 1 : 0))) {
+				if(!(mat_fucking_rix[x][y][1] == colors[color])) {
+					// console.log(mat_fucking_rix[x][y][0]+" "+color+" "+counts[color]);
+					counts[color] += mat_fucking_rix[x][y][0] - 1;
+					counts[colors.indexOf(mat_fucking_rix[x][y][1])] -= mat_fucking_rix[x][y][0] - 1;
+				}
+				mat_fucking_rix[x][y][1] = colors[color];
+				return;
+			}
+			if(!(mat_fucking_rix[x][y][1] == colors[color])) {
+				// console.log(mat_fucking_rix[x][y][0]+" "+color+" "+counts[color]);
+				counts[color] += mat_fucking_rix[x][y][0] - 1;
+				counts[colors.indexOf(mat_fucking_rix[x][y][1])] -= mat_fucking_rix[x][y][0] - 1;
+			}
+			mat_fucking_rix[x][y][1] = colors[0];
+			mat_fucking_rix[x][y][0] = 0;
+			counts[color] -= 4;
+			if(x+1 < 12) {
+				the_fucking_recursion(x+1, y);
+			}
+			if(x-1 >= 0) {
+				the_fucking_recursion(x-1, y);
+			}
+			if(y+1 < 12) {
+				the_fucking_recursion(x, y+1);
+			}
+			if(y-1 >= 0) {
+				the_fucking_recursion(x, y-1);
+			}
+		}
+
+		class Box extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {color: 'black', count: this.props.count};
+				this.handleClick = this.handleClick.bind(this);
+			}
+
+			handleClick(event) {
+				event.stopPropagation();
+				if(game_flag == 1)
+					return;
+				if(mat_fucking_rix[this.props.row][this.props.access][1] != 'black' && colors[color] != mat_fucking_rix[this.props.row][this.props.access][1] )
+					return;
+				the_fucking_recursion(this.props.row, this.props.access);
+				this.setState(prevState => ({color: mat_fucking_rix[this.props.row][this.props.access][1], count: prevState.count+1}));
+				color = color % users + 1;
+				var temp = color;
+				var newcolor = 0;
+				var k = 1;
+				while(counts[0] == 1 && counts[color] == 0 && newcolor != temp) {
+					newcolor = color % users + 1;
+					color = newcolor;
+					k++;
+				}
+				if(k == users) {
+					console.log(""+colors[color]+" won!!");
+					alert(""+colors[color]+" won!!")
+					game_flag = 1;
+				}
+				/*for(var i = 0; i < 12; i++) {
+					var temp = "";
+					for(var j = 0; j < 12; j++)
+						temp += mat_fucking_rix[i][j]+" ";
+					console.log(temp);
+				}*/
+				if(counts[0] == 0 && color == users)
+					counts[0] = 1;
+				document.getElementById('game').click();
+			}
+
+			render() {
+				return <div className = "center-align col s1"><span id = {"{x: "+this.props.row+",y: "+this.props.access+"}"} className = "flow-text" onClick = {this.handleClick} style = {{color: mat_fucking_rix[this.props.row][this.props.access][1]}}>{mat_fucking_rix[this.props.row][this.props.access][0]}</span></div>;
+			}
+		}
+
+		class Ex extends React.Component {
+			render() {
+				const boxes = mat_fucking_rix[this.props.access].map((box, index) => <Box count = {mat_fucking_rix[this.props.access][index][0]} key = {index} access = {index} row = {this.props.access}/>);
+				return (<div className = "row valign-wrapper">{boxes}</div>);
+			}
+		}
+
+		class Ex2 extends React.Component {
+			constructor(props) {
+				super(props);
+				this.reloadGame = this.reloadGame.bind(this);
+			}
+
+			reloadGame(event) {
+				this.forceUpdate();
+			}
+
+			render() {
+				const rows = mat_fucking_rix.map((row, index) => <Ex key = {index} access = {index} />);
+				return (<div id = "game" onClick={this.reloadGame} >{rows}</div>);
+			}
+		}
+
+		ReactDOM.render(<Ex2 />, document.getElementById('root'));
+	</script>
+</body>
+</html>
