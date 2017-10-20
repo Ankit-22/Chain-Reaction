@@ -22,7 +22,7 @@ for(var i = 0; i < 12; i++) {
 function the_game_logic(x, y) {
 	counts[color]++;
 	if(++the_game_matrix[x][y][0] < (4 - (x == 11 ? 1 : 0) - (x == 0 ? 1 : 0) - (y == 0 ? 1 : 0) - (y == 11 ? 1 : 0))) {
-		
+	
 		if(!(the_game_matrix[x][y][1] == colors[color])) {
 			// console.log(the_game_matrix[x][y][0]+" "+color+" "+counts[color]);
 			counts[color] += the_game_matrix[x][y][0] - 1;
@@ -41,8 +41,8 @@ function the_game_logic(x, y) {
 
 	the_game_matrix[x][y][1] = colors[0];
 	the_game_matrix[x][y][0] = 0;
-	counts[color] -= 4;
-	
+	counts[color] -= (4 - (x == 11 ? 1 : 0) - (x == 0 ? 1 : 0) - (y == 0 ? 1 : 0) - (y == 11 ? 1 : 0));
+
 	if(x+1 < 12) {
 		the_game_logic(x+1, y);
 	}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Hello, React</title>
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+	<div id = "root">
+	</div>
+	<script type="text/babel">
+		class HelloWorld extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {isRed : true};
+				this.handleClick = this.handleClick.bind(this);
+			}
+
+			handleClick() {
+				this.setState(prevState => ({
+					isRed: !prevState.isRed
+				}));
+			}
+
+			render() {
+				return <h1 onClick = {this.handleClick} style = {{color: (this.state.isRed ? 'red' : 'blue'), display: 'inline'}}>Hello, {this.props.name}!</h1>;
+			}
+		}
+
+		class List extends React.Component {
+			render() {
+				return (
+					<div>
+						<HelloWorld name = "Ankit" /><br />
+						<HelloWorld name = "Pragya" /><br />
+						<HelloWorld name = "ABCD" /><br />
+					</div>
+				);
+			}
+		}
+
+		ReactDOM.render(<List />, document.getElementById('root'));
+	</script>
+</body>
+</html>

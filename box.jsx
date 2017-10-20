@@ -30,6 +30,8 @@ class Box extends React.Component {
 			k++;
 		}
 
+		// console.log(counts);
+
 		if(k == users) {
 			// console.log(""+colors[color]+" won!!");
 			alert(""+colors[color]+" won!!")
